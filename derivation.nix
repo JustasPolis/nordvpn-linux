@@ -12,6 +12,7 @@ pkgs.stdenv.mkDerivation rec {
 
   buildInputs = [ pkgs.libxml2 pkgs.libidn2 ];
   nativeBuildInputs = [ pkgs.dpkg pkgs.autoPatchelfHook pkgs.stdenv.cc.cc.lib ];
+  runtimeDependencies = [ pkgs.iptables pkgs.iproute2 ];
 
   dontConfigure = true;
   dontBuild = true;
