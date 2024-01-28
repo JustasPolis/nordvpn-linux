@@ -16,9 +16,8 @@ in {
         ExecStartPre = ''
           ${pkgs.bash}/bin/bash -c '\
             mkdir -m 700 -p /var/lib/nordvpn; \
-            if [ -z "$(ls -A /var/lib/nordvpn)" ]; then \
-              cp -r ${pkg}/var/lib/nordvpn/* /var/lib/nordvpn; \
-            fi'
+            cp -r ${pkg}/var/lib/nordvpn/* /var/lib/nordvpn; \
+            '
         '';
         NonBlocking = true;
         KillMode = "process";
