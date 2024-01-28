@@ -24,8 +24,6 @@ pkgs.stdenv.mkDerivation rec {
 
   installPhase = ''
     runHook preInstall
-    mkdir -p $out
-    mv usr/* $out/
     runHook postInstall
   '';
 
