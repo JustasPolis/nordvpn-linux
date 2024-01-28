@@ -1,17 +1,15 @@
-inputs:
-{ lib, stdenv, fetchFromGitHub, buildGoModule, pkg-config, libxml2, iptables
-, iproute2 }:
+{ pkgs }:
 
-buildGoModule rec {
+pkgs.buildGo120Module rec {
   pname = "nordvpn";
   version = "3.17.0";
-  versionHash = "";
+  versionHash = "sha256-ONdZIhJZmtqxwGeKHQ2LuaIWj+QcCmQy9iARhbLQzWI=";
 
   proxyVendor = true;
 
-  nativeBuildInputs = [ pkg-config ];
+  nativeBuildInputs = [ pkgs.pkg-config ];
 
-  buildInputs = [ libxml2.dev iptables iproute2 ];
+  buildInputs = [ pkgs.libxml2.dev pkgs.iptables pkgs.iproute2 ];
 
   ldflags = [
     "-X main.Version=${version}"
@@ -20,21 +18,23 @@ buildGoModule rec {
     "-X main.Hash=${versionHash}"
   ];
 
+  CGO_ENABLED = 1;
+
   CGO_CFLAGS = [ "-g" "-O2" "-D_FORTIFY_SOURCE=2" ];
   CGO_LDFLAGS = [ "-Wl,-z,relro,-z,now" ];
 
-  src = fetchFromGitHub {
-    owner = "NordSecurity";
+  src = pkgs.fetchFromGitHub {
+    owner = "JustasPolis";
     repo = "nordvpn-linux";
     rev = version;
     sha256 = versionHash;
   };
 
-  vendorHash = "sha256-/5n5iQtEqi6Y6enjd63D5MkZucHeXgzuv4Qpj8FWYIo=";
+  vendorHash = "sha256-IJpvL4Q+uvEFLgyls1tGa8SD40y+SRnnfk++/yfiWE0=";
 
-  meta = with lib; {
+  meta = with pkgs.lib; {
     description = "CLI client for NordVPN";
     homepage = "https://nordvpn.com";
-    license = lib.licenses.gpl3;
+    license = pkgs.lib.licenses.gpl3;
   };
 }
