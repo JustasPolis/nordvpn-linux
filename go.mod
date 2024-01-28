@@ -19,7 +19,7 @@ require (
 	github.com/golang/protobuf v1.5.3
 	github.com/google/uuid v1.3.0
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
-	github.com/jbowtie/gokogiri v0.0.0-20190301021639-37f655d3078f
+	github.com/KasparWinckler/gokogiri v0.0.0-20190301021639-37f655d3078f
 	github.com/jbowtie/ratago v0.0.0-20200401224626-3140c0a9b186
 	github.com/kofalt/go-memoize v0.0.0-20220914132407-0b5d6a304579
 	github.com/magefile/mage v1.14.0
