@@ -1,3 +1,4 @@
+inputs:
 { lib, stdenv, fetchFromGitHub, buildGoModule, pkg-config, libxml2, iptables
 , iproute2 }:
 
