@@ -1,36 +1,33 @@
 { pkgs }:
-
-pkgs.buildGo120Module rec {
+pkgs.stdenv.mkDerivation rec {
   pname = "nordvpn";
   version = "3.17.0";
-  versionHash = "sha256-ONdZIhJZmtqxwGeKHQ2LuaIWj+QcCmQy9iARhbLQzWI=";
+  versionHash = "sha256-0SyDD55P6UmUKgD9h0/dPkJtVpRHj+rlSCyfUwZeu/E=";
 
-  proxyVendor = true;
-
-  nativeBuildInputs = [ pkgs.pkg-config ];
-
-  buildInputs = [ pkgs.libxml2.dev pkgs.iptables pkgs.iproute2 ];
-
-  ldflags = [
-    "-X main.Version=${version}"
-    "-X main.Salt=${"abc123"}"
-    "-X main.Environment=${"prod"}"
-    "-X main.Hash=${versionHash}"
-  ];
-
-  CGO_ENABLED = 1;
-
-  CGO_CFLAGS = [ "-g" "-O2" "-D_FORTIFY_SOURCE=2" ];
-  CGO_LDFLAGS = [ "-Wl,-z,relro,-z,now" ];
-
-  src = pkgs.fetchFromGitHub {
-    owner = "JustasPolis";
-    repo = "nordvpn-linux";
-    rev = version;
+  src = pkgs.fetchurl {
+    url =
+      "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn_${version}_amd64.deb";
     sha256 = versionHash;
   };
 
-  vendorHash = "sha256-IJpvL4Q+uvEFLgyls1tGa8SD40y+SRnnfk++/yfiWE0=";
+  buildInputs = [ pkgs.libxml2 pkgs.libidn2 ];
+  nativeBuildInputs = [ pkgs.dpkg pkgs.autoPatchelfHook pkgs.stdenv.cc.cc.lib ];
+
+  dontConfigure = true;
+  dontBuild = true;
+
+  unpackPhase = ''
+    runHook preUnpack
+    dpkg --fsys-tarfile $src | tar --extract
+    runHook postUnpack
+  '';
+
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out
+    mv usr/* $out/
+    runHook postInstall
+  '';
 
   meta = with pkgs.lib; {
     description = "CLI client for NordVPN";
