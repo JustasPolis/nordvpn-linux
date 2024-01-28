@@ -8,6 +8,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     environment = { systemPackages = [ pkg ]; };
+    users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
       description = "NordVPN daemon.";
       serviceConfig = {
