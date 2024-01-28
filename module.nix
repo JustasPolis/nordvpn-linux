@@ -5,9 +5,7 @@ in {
   options.programs.nordvpn = { enable = lib.mkEnableOption "nordvpn"; };
 
   config = lib.mkIf cfg.enable {
-    environment = {
-      systemPackages = [ "${self.packages.${system}.default}/bin/nordvpn" ];
-    };
+    environment = { systemPackages = [ self.packages.${system}.default ]; };
     systemd.services.nordvpnd = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig.ExecStart =
