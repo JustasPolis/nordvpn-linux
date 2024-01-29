@@ -10,18 +10,20 @@ in {
     environment = { systemPackages = [ pkg ]; };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
-      path = with pkgs; [
-        iproute2
-        sysctl
-        iptables
-        procps
-        cacert
-        libxml2
-        libidn2
-        zlib
-        wireguard-tools
-        e2fsprogs
-      ];
+      path = with pkgs;
+        [
+          iproute2
+          sysctl
+          iptables
+          procps
+          cacert
+          libxml2
+          libidn2
+          zlib
+          wireguard-tools
+          e2fsprogs
+        ] ++ (lib.optional config.networking.resolvconf.enable
+          config.networking.resolvconf.package);
       description = "NordVPN daemon.";
       serviceConfig = {
         ExecStart = "${pkg}/bin/nordvpnd";
