@@ -20,10 +20,10 @@ in {
         libidn2
         zlib
         wireguard-tools
+        system-path
       ];
       description = "NordVPN daemon.";
       serviceConfig = {
-        #Environment = "PATH=/run/current-system/sw/bin/";
         ExecStart = "${pkg}/bin/nordvpnd";
         ExecStartPre = ''
           ${pkgs.bash}/bin/bash -c '\
