@@ -12,8 +12,8 @@ in {
     systemd.services.nordvpnd = {
       description = "NordVPN daemon.";
       serviceConfig = {
-        ExecStart =
-          "PATH=$PATH:${lib.makeBinPath [ pkgs.iproute2 ]} ${pkg}/bin/nordvpnd";
+        ExecStart = "${pkg}/bin/nordvpnd";
+        Environment = "PATH=$PATH:${lib.makeBinPath [ pkgs.iproute2 ]}";
         ExecStartPre = ''
           ${pkgs.bash}/bin/bash -c '\
             mkdir -m 700 -p /var/lib/nordvpn; \
