@@ -10,10 +10,10 @@ in {
     environment = { systemPackages = [ pkg ]; };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
+      path = [ pkgs.iproute2 ];
       description = "NordVPN daemon.";
       serviceConfig = {
         ExecStart = "${pkg}/bin/nordvpnd";
-        Environment = "PATH=$PATH:${lib.makeBinPath [ pkgs.iproute2 ]}";
         ExecStartPre = ''
           ${pkgs.bash}/bin/bash -c '\
             mkdir -m 700 -p /var/lib/nordvpn; \
