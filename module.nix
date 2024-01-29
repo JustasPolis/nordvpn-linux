@@ -7,8 +7,6 @@ in {
   options.programs.nordvpn = { enable = lib.mkEnableOption "nordvpn"; };
 
   config = lib.mkIf cfg.enable {
-    services.resolved = { enable = true; };
-    networking.resolvconf.enable = false;
     environment = { systemPackages = [ pkg ]; };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
@@ -22,13 +20,10 @@ in {
         libidn2
         zlib
         wireguard-tools
-        e2fsprogs
-        systemd
       ];
       description = "NordVPN daemon.";
-      wants = [ "network-online.target" ];
-      after = [ "network-online.target" ];
       serviceConfig = {
+        Environment = "PATH=/run/current-system/sw/bin/";
         ExecStart = "${pkg}/bin/nordvpnd";
         ExecStartPre = ''
           ${pkgs.bash}/bin/bash -c '\
@@ -45,6 +40,8 @@ in {
         Group = "nordvpn";
       };
       wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
     };
   };
 }
