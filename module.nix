@@ -8,7 +8,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.resolved = { enable = true; };
-    networking.resolvconf.enable = true;
+    networking.resolvconf.enable = false;
     environment = { systemPackages = [ pkg ]; };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
@@ -26,12 +26,8 @@ in {
         systemd
       ];
       description = "NordVPN daemon.";
-      wants = [ "network.target" ];
-      after = [
-        "network-online.target"
-        "NetworkManager.service"
-        "systemd-resolved.service"
-      ];
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
       serviceConfig = {
         ExecStart = "${pkg}/bin/nordvpnd";
         ExecStartPre = ''
