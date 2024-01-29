@@ -20,7 +20,6 @@ in {
         libidn2
         zlib
         wireguard-tools
-        chattr
         e2fsprogs
       ];
       description = "NordVPN daemon.";
