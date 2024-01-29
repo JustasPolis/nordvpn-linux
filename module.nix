@@ -7,7 +7,7 @@ in {
   options.programs.nordvpn = { enable = lib.mkEnableOption "nordvpn"; };
 
   config = lib.mkIf cfg.enable {
-    networking.resolvconf.enable = true;
+    services.resolved = { enable = true; };
     environment = { systemPackages = [ pkg ]; };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
