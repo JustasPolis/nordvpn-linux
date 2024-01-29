@@ -10,9 +10,20 @@ in {
     environment = { systemPackages = [ pkg ]; };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
+      path = with pkgs; [
+        iproute2
+        sysctl
+        iptables
+        procps
+        cacert
+        libxml2
+        libidn2
+        zlib
+        wireguard-tools
+      ];
       description = "NordVPN daemon.";
       serviceConfig = {
-        Environment = "PATH=/run/current-system/sw/bin/";
+        #Environment = "PATH=/run/current-system/sw/bin/";
         ExecStart = "${pkg}/bin/nordvpnd";
         ExecStartPre = ''
           ${pkgs.bash}/bin/bash -c '\
