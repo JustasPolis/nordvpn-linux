@@ -7,24 +7,29 @@ in {
   options.programs.nordvpn = { enable = lib.mkEnableOption "nordvpn"; };
 
   config = lib.mkIf cfg.enable {
+    networking.resolvconf.enable = true;
     environment = { systemPackages = [ pkg ]; };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
-      path = with pkgs;
-        [
-          iproute2
-          sysctl
-          iptables
-          procps
-          cacert
-          libxml2
-          libidn2
-          zlib
-          wireguard-tools
-          e2fsprogs
-        ] ++ (lib.optional config.networking.resolvconf.enable
-          config.networking.resolvconf.package);
+      path = with pkgs; [
+        iproute2
+        sysctl
+        iptables
+        procps
+        cacert
+        libxml2
+        libidn2
+        zlib
+        wireguard-tools
+        e2fsprogs
+      ];
       description = "NordVPN daemon.";
+      wants = [ "network.target" ];
+      after = [
+        "network-online.target"
+        "NetworkManager.service"
+        "systemd-resolved.service"
+      ];
       serviceConfig = {
         ExecStart = "${pkg}/bin/nordvpnd";
         ExecStartPre = ''
@@ -42,8 +47,6 @@ in {
         Group = "nordvpn";
       };
       wantedBy = [ "multi-user.target" ];
-      after = [ "network-online.target" ];
-      wants = [ "network-online.target" ];
     };
   };
 }
