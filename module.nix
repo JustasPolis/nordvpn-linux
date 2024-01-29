@@ -22,6 +22,7 @@ in {
         zlib
         wireguard-tools
         e2fsprogs
+        systemd
       ];
       description = "NordVPN daemon.";
       wants = [ "network.target" ];
