@@ -8,6 +8,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.resolved = { enable = true; };
+    networking.resolvconf.enable = true;
     environment = { systemPackages = [ pkg ]; };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
