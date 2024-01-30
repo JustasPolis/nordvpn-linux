@@ -10,15 +10,15 @@ in {
     environment = {
       systemPackages = [
         pkg
-        iproute2
-        sysctl
-        iptables
-        procps
-        cacert
-        libxml2
-        libidn2
-        zlib
-        wireguard-tools
+        pkgs.iproute2
+        pkgs.sysctl
+        pkgs.iptables
+        pkgs.procps
+        pkgs.cacert
+        pkgs.libxml2
+        pkgs.libidn2
+        pkgs.zlib
+        pkgs.wireguard-tools
       ];
     };
     users.groups.nordvpn = { };
