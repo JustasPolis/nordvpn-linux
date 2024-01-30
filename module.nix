@@ -7,7 +7,20 @@ in {
   options.programs.nordvpn = { enable = lib.mkEnableOption "nordvpn"; };
 
   config = lib.mkIf cfg.enable {
-    environment = { systemPackages = [ pkg ]; };
+    environment = {
+      systemPackages = [
+        pkg
+        pkgs.iproute2
+        pkgs.sysctl
+        pkgs.iptables
+        pkgs.procps
+        pkgs.cacert
+        pkgs.libxml2
+        pkgs.libidn2
+        pkgs.zlib
+        pkgs.wireguard-tools
+      ];
+    };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
       description = "NordVPN daemon.";
