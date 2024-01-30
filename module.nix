@@ -23,6 +23,17 @@ in {
     };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
+      path = [
+        pkgs.iproute2
+        pkgs.sysctl
+        pkgs.iptables
+        pkgs.procps
+        pkgs.cacert
+        pkgs.libxml2
+        pkgs.libidn2
+        pkgs.zlib
+        pkgs.wireguard-tools
+      ];
       description = "NordVPN daemon.";
       serviceConfig = {
         Environment = "PATH=/run/current-system/sw/bin/";
