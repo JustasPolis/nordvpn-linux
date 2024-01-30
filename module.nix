@@ -7,33 +7,9 @@ in {
   options.programs.nordvpn = { enable = lib.mkEnableOption "nordvpn"; };
 
   config = lib.mkIf cfg.enable {
-    environment = {
-      systemPackages = [
-        pkg
-        pkgs.iproute2
-        pkgs.sysctl
-        pkgs.iptables
-        pkgs.procps
-        pkgs.cacert
-        pkgs.libxml2
-        pkgs.libidn2
-        pkgs.zlib
-        pkgs.wireguard-tools
-      ];
-    };
+    environment = { systemPackages = [ pkg ]; };
     users.groups.nordvpn = { };
     systemd.services.nordvpnd = {
-      path = [
-        pkgs.iproute2
-        pkgs.sysctl
-        pkgs.iptables
-        pkgs.procps
-        pkgs.cacert
-        pkgs.libxml2
-        pkgs.libidn2
-        pkgs.zlib
-        pkgs.wireguard-tools
-      ];
       description = "NordVPN daemon.";
       serviceConfig = {
         Environment = "PATH=/run/current-system/sw/bin/";
